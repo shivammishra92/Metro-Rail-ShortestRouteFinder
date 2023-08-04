@@ -35,7 +35,7 @@ class MetroRouteGraph {
 		}
 	}
 
-    void shortestDistDijkstra(int src, int n, unordered_map<int,string>stations_mapping) {
+    void shortestDistDijkstra(int src, int dest,int n, unordered_map<int,pair<string,string>>stations_mapping) {
 		vector<int> dist(n,INT_MAX);
 		set<pair<int,int> > st;
 		//intiial steps
@@ -68,12 +68,12 @@ class MetroRouteGraph {
 			}
 			
 		}
-
-		//cout << "printing ans:" << endl;
-        cout << "Shortest Distance of "<< stations_mapping[src] << " station from all other stations is:" << endl;
+        cout << "Shortest Distance of "<< stations_mapping[src].first << " station from "<<stations_mapping[dest].first<<" stations is:"<<dist[dest] <<"km" << endl;
+		
+        cout << "Shortest Distance of "<< stations_mapping[src].first << " station from all other stations is:" << endl;
         cout<<endl;
 		for(int i=1; i<n; i++) {
-			cout <<"Shortest Distance of " << stations_mapping[src] << " from "<< stations_mapping[i] <<" is-> " << dist[i] <<endl;
+			cout <<"Shortest Distance of " << stations_mapping[src].first << " from "<< stations_mapping[i].first <<" is-> " << dist[i]<<"km" <<endl;
 		}
         cout << endl;
 		
@@ -83,25 +83,50 @@ class MetroRouteGraph {
 
 int main() {
 	MetroRouteGraph g;
-    cout<<"WELCOME TO KANPUR METRO"<<endl;
-
-    g.addEdge(1,2,3,1);
+	g.addEdge(1,2,3,1);
     g.addEdge(1,4,12,1);
     g.addEdge(2,4,10,1);
     g.addEdge(2,3,10,1);
     g.addEdge(3,4,5,1);
     g.addEdge(1,2,1,1);
+
+    //<(node,(station name,its code))>
+	unordered_map<int,pair<string,string>>stations_mapping; 
+    stations_mapping[1] = {"Gopal Nagar","GN"};
+    stations_mapping[2] = {"Yashoda Nagar","YN"};
+    stations_mapping[3] = {"Mall Road","MR"};
+    stations_mapping[4] = {"IIT Kanpur","IITKNP"};
+
+
+	unordered_map<string,int>codeToNode;
+	for(int i=1;i<=4;i++){
+		codeToNode[stations_mapping[i].second] = i;
+	}
+
+
+    cout<<endl;
+    cout<<"***************************WELCOME TO KANPUR METRO***************************"<<endl;
+    cout<<"Below are the Metro Stations with their Codes:"<<endl;
+	cout<<endl;
+        for(int i=1;i<=4;i++){
+			cout<<stations_mapping[i].first << " --- " <<stations_mapping[i].second<<endl;
+		}
+
+    cout<<endl;
+    cout<<"Enter the Source Station code:"<<endl;
+	string src;
+	cin>>src;
+	cout<<"Enter the Destination Station code:"<<endl;
+	string dest;
+	cin>>dest; 
+
+	int s = codeToNode[src];
+	int d = codeToNode[dest];
+	g.shortestDistDijkstra(s,d,5,stations_mapping);		
     
-    unordered_map<int,string>stations_mapping;
-    stations_mapping[1] = "Gopal Nagar";
-    stations_mapping[2] = "Yashoda Nagar";
-    stations_mapping[3] = "Mall Road";
-    stations_mapping[4] = "IIT Kanpur";
-
-
 	//g.printAdjList();
 	
-	g.shortestDistDijkstra(4,5,stations_mapping);
+	//g.shortestDistDijkstra(4,5,stations_mapping);
 
 	return 0;
 }
