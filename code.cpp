@@ -37,7 +37,7 @@ class MetroRouteGraph {
 
     void shortestDistDijkstra(int src, int dest,int n, unordered_map<int,pair<string,string>>stations_mapping) {
 		vector<int> dist(n,INT_MAX);
-		set<pair<int,int> > st;
+		set<pair<int,int>> st;
 		//intiial steps
 		dist[src] = 0;
 		st.insert(make_pair(0,src));
